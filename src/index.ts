@@ -1,8 +1,8 @@
-import { forSaleCarAndTrucks } from "craigslist-automation";
+import { forSaleCarsAndTrucks } from "craigslist-automation";
 
 (async () => {
   let value = 0;
-  for await (let galleryPost of forSaleCarAndTrucks("seattle", {
+  for await (let galleryPost of forSaleCarsAndTrucks("seattle", {
     query: "blazer k5",
   })) {
     console.log(galleryPost);
