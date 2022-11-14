@@ -1,0 +1,19 @@
+{
+  "name": "boat-scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moozzyk/boat-scraper.git"
+  },
+  "author": "Pawel Kadluczka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moozzyk/boat-scraper/issues"
+  },
+  "homepage": "https://github.com/moozzyk/boat-scraper#readme"
+}
