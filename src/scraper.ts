@@ -4,7 +4,7 @@ import { DB_FILENAME } from "./common";
 import { PostsDb } from "./postsdb";
 
 const regex = new RegExp(
-  "^19\\d\\d|seadoo|sea-doo|whaler|sailboat|vintage|smokecraft|pontoon|dingy|inflatable|superjet|yacht",
+  "^19\\d\\d|seadoo|sea-doo|whaler|sailboat|vintage|smokercraft|pontoon|dingy|inflatable|superjet|yacht",
   "i"
 );
 function shouldSkip(post: GalleryPost): boolean {
