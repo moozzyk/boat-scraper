@@ -1,30 +1,10 @@
 import { forSaleBoats } from "craigslist-automation";
 import { GalleryPost } from "craigslist-automation/types";
-import { Database } from "sqlite3-async";
 import { DB_FILENAME } from "./common";
-
-async function createDatabase(): Promise<void> {
-  let db = new Database(DB_FILENAME);
-  await db.open();
-  await db.run(`
-  CREATE TABLE IF NOT EXISTS Posts(
-    url TEXT NOT NULL,
-    date TIMESTAMP NOT NULL,
-    title TEXT,
-    price INTEGER,
-    currency TEXT,
-    description TEXT,
-    attributes TEXT,
-    images TEXT,
-    location TEXT,
-    ts TIMESTAMP,
-    PRIMARY KEY (url, date),
-    FOREIGN KEY (url) REFERENCES Posts(url));`);
-  await db.close();
-}
+import { PostsDb } from "./postsdb";
 
 const regex = new RegExp(
-  "^19\\d\\d|seadoo|sea-doo|whaler|sailboat|vintage|smokecraft|pontoon|dingy|inflatable|superjet",
+  "^19\\d\\d|seadoo|sea-doo|whaler|sailboat|vintage|smokecraft|pontoon|dingy|inflatable|superjet|yacht",
   "i"
 );
 function shouldSkip(post: GalleryPost): boolean {
@@ -32,12 +12,11 @@ function shouldSkip(post: GalleryPost): boolean {
 }
 
 (async () => {
-  await createDatabase();
-  let db = new Database(DB_FILENAME);
-  await db.open();
-  let insertPost = await db.prepare(
-    "INSERT INTO Posts VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
-  );
+  const postsDb = new PostsDb(DB_FILENAME);
+  postsDb.createPostsDb();
+
+  const lastPostDate = postsDb.lastPostDate();
+
   for await (let galleryPost of forSaleBoats("seattle", {
     hasImage: true,
     minPrice: 5000,
@@ -48,20 +27,11 @@ function shouldSkip(post: GalleryPost): boolean {
       continue;
     }
     const post = await galleryPost.getPost();
+    const postDate = post.dateUpdated ?? post.datePosted ?? Date.now();
+    // if (postDate < lastPostDate) {
+    //   break;
+    // }
     console.log(post);
-    await insertPost.run(
-      post.url,
-      post.dateUpdated ?? post.datePosted,
-      post.title,
-      post.price,
-      post.currency,
-      post.description,
-      post.attributes ? JSON.stringify(post.attributes) : "NULL",
-      post.images ? JSON.stringify(post.images) : "NULL",
-      [post.city, post.state].join(", "),
-      Date.now()
-    );
+    postsDb.insertPost(post);
   }
-  await insertPost.finalize();
-  await db.close();
 })();
