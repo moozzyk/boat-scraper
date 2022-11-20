@@ -13,7 +13,8 @@ export class PostsDb {
     this.db.exec(`
     CREATE TABLE IF NOT EXISTS Posts(
       url TEXT NOT NULL,
-      date TIMESTAMP NOT NULL,
+      date_updated TIMESTAMP NOT NULL,
+      date_posted TIMESTAMP,
       title TEXT,
       price INTEGER,
       currency TEXT,
@@ -22,19 +23,23 @@ export class PostsDb {
       images TEXT,
       location TEXT,
       ts TIMESTAMP,
-      hide BOOLEAN NOT NULL DEFAULT 0,
-      PRIMARY KEY (url, date));`);
+      PRIMARY KEY (url, date_updated));`);
   }
 
   insertPost(post: Post) {
     this.db
       .prepare(
         "INSERT OR IGNORE INTO Posts VALUES\
-          ($url, $date, $title, $price, $currency, $description, $attributes, $images, $location, $ts, $hide);"
+          ($url, $date_updated, $date_posted, $title, $price, $currency, $description, $attributes, $images, $location, $ts);"
       )
       .run({
         url: post.url,
-        date: (post.dateUpdated ?? post.datePosted ?? new Date()).getTime(),
+        date_updated: (
+          post.dateUpdated ??
+          post.datePosted ??
+          new Date()
+        ).getTime(),
+        date_posted: (post.datePosted ?? new Date(0)).getTime(),
         title: post.title,
         price: post.price,
         currency: post.currency,
@@ -49,7 +54,7 @@ export class PostsDb {
 
   lastPostDate(): Date {
     return new Date(
-      this.db.prepare("SELECT max(date) from Posts;").pluck().get() ?? 0
+      this.db.prepare("SELECT max(date_updated) from Posts;").pluck().get() ?? 0
     );
   }
 

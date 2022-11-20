@@ -1,5 +1,4 @@
-import { forSaleBoats } from "craigslist-automation";
-import { GalleryPost } from "craigslist-automation/types";
+import { forSaleBoats, GalleryPost } from "craigslist-automation";
 import { DB_FILENAME } from "./common";
 import { PostsDb } from "./postsdb";
 
@@ -8,7 +7,7 @@ const regex = new RegExp(
   "i"
 );
 function shouldSkip(post: GalleryPost): boolean {
-  return regex.test(post.title || "");
+  return regex.test(post.title ?? "");
 }
 
 (async () => {
@@ -16,6 +15,7 @@ function shouldSkip(post: GalleryPost): boolean {
   postsDb.createPostsDb();
 
   const lastPostDate = postsDb.lastPostDate();
+  console.log(lastPostDate);
 
   for await (let galleryPost of forSaleBoats("seattle", {
     hasImage: true,
