@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "devStart": "nodemon dist/index.js"
+    "devStart": "nodemon -e js,ejs dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "craigslist-automation": "file:../craigslist-automation",
+    "ejs": "^3.1.8",
     "express": "^4.18.2",
     "sqlite3-async": "file:../sqlite3-async"
   }

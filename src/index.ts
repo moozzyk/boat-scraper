@@ -4,10 +4,13 @@ import express from "express";
 
 const port: number = 3000;
 
-const app: express.Application = express();
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+
+app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-  res.send("TypeScript With Express");
+  res.render("index", { var: "My var" });
 });
 
 app.listen(port, () => {
