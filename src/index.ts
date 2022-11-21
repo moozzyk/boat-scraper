@@ -15,6 +15,15 @@ app.get("/", (req, res) => {
   res.render("index", { posts });
 });
 
+app.get("/hide", (req, res) => {
+  if (req.query.postId) {
+    new PostsDb(DB_FILENAME).hidePost(req.query.postId as string);
+    res.sendStatus(200).end();
+  } else {
+    res.sendStatus(500).end();
+  }
+});
+
 app.listen(port, () => {
   console.log(`TypeScript with Express
        http://localhost:${port}/`);

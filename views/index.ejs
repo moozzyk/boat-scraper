@@ -6,24 +6,25 @@
     <meta name="viewport" content=
         "width=device-width,
         initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/scripts.js"></script>
 </head>
 
 <body>
-    <ul>
+    <ul class="post-list">
         <% for (post of locals.posts) {%>
-        <li class="post">
+        <li class="post" <%=post.hidden ? "hidden" : "" %> id="<%=post.url%>">
             <div class="post-overview">
-                <span class="post-title"><%= post.title%></span>
-                <span class="date"><%= new Date(post.date_posted).toLocaleString("en-US")%></span>
-                <span class="date"><%= new Date(post.date_updated).toLocaleString("en-US")%></span>
-                <span class="price grid-item"><%= post.currency === "USD" ? `$${post.price}` : `${post.price} ${post.currency}`%></span>
-                <span class="location"><%= post.location%></span>
+                <span class="post-title"><%=post.title%></span>
+                <!-- <span class="date"><%=new Date(post.date_posted).toLocaleString("en-US")%></span> -->
+                <span class="date"><%=new Date(post.date_updated).toLocaleString("en-US")%></span>
+                <span class="price grid-item"><%=post.currency === "USD" ? `$${post.price}` : `${post.price} ${post.currency}`%></span>
+                <span class="location"><%=post.location%></span>
                 <span>
-                    <img class="image" src="<%= JSON.parse(post.images)[0]%>"/>
+                    <a href="<%=post.url%>"><img class="image" src="<%=JSON.parse(post.images)[0]%>"/></a>
                 </span>
                 <span>
-                    <a href="<%= post.url%>">Show post</a>
+                    <input type="checkbox" value="<%= !!post.hidden%>" onclick="javascript:hidePost('<%=post.url%>')" />
                 </span>
             </div>
         </li>

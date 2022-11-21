@@ -27,8 +27,7 @@ export class PostsDb {
     this.db.exec(`
     CREATE TABLE IF NOT EXISTS HiddenPosts(
       url TEXT NOT NULL,
-      PRIMARY KEY (url),
-      FOREIGN KEY (url) REFERENCES Posts(url));`);
+      PRIMARY KEY (url));`);
   }
 
   insertPost(post: Post) {
@@ -74,7 +73,7 @@ export class PostsDb {
       .all();
   }
 
-  hidePosts(url: string) {
+  hidePost(url: string) {
     this.db
       .prepare("INSERT OR IGNORE INTO HiddenPosts VALUES($url)")
       .run({ url });
