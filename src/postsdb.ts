@@ -58,6 +58,12 @@ export class PostsDb {
     );
   }
 
+  getPosts(): any[] {
+    return this.db
+      .prepare("SELECT * FROM Posts ORDER BY date_updated DESC;")
+      .all();
+  }
+
   close() {
     this.db.close();
   }
