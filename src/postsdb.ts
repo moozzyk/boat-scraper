@@ -24,6 +24,11 @@ export class PostsDb {
       location TEXT,
       ts TIMESTAMP,
       PRIMARY KEY (url, date_updated));`);
+    this.db.exec(`
+    CREATE TABLE IF NOT EXISTS HiddenPosts(
+      url TEXT NOT NULL,
+      PRIMARY KEY (url),
+      FOREIGN KEY (url) REFERENCES Posts(url));`);
   }
 
   insertPost(post: Post) {
@@ -60,8 +65,23 @@ export class PostsDb {
 
   getPosts(): any[] {
     return this.db
-      .prepare("SELECT * FROM Posts ORDER BY date_updated DESC;")
+      .prepare(
+        `SELECT p.*, h.url is not null as hidden
+        FROM Posts p LEFT JOIN HiddenPosts h
+          ON p.url = h.url
+        ORDER BY date_updated DESC;`
+      )
       .all();
+  }
+
+  hidePosts(url: string) {
+    this.db
+      .prepare("INSERT OR IGNORE INTO HiddenPosts VALUES($url)")
+      .run({ url });
+  }
+
+  unhidePosts(url: string) {
+    this.db.prepare("DELETE FROM HiddenPosts WHERE url = $url").run({ url });
   }
 
   close() {
