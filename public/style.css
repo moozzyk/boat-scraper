@@ -1,6 +1,6 @@
 .post-overview {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 200px);
+    grid-template-columns: 200px 120px 120px 70px 150px 150px 50px;
   }
 
 .image {
@@ -9,3 +9,10 @@
     border: 1px solid #000;
     object-fit: scale-down;
 }
+
+span {
+    /* border: 1px solid #000; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

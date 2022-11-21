@@ -17,9 +17,13 @@
                 <span class="post-title"><%= post.title%></span>
                 <span class="date"><%= new Date(post.date_posted).toLocaleString("en-US")%></span>
                 <span class="date"><%= new Date(post.date_updated).toLocaleString("en-US")%></span>
-                <span class="price"><%= post.currency === "USD" ? `$${post.price}` : `${post.price} ${post.currency}`%></span>
+                <span class="price grid-item"><%= post.currency === "USD" ? `$${post.price}` : `${post.price} ${post.currency}`%></span>
+                <span class="location"><%= post.location%></span>
                 <span>
                     <img class="image" src="<%= JSON.parse(post.images)[0]%>"/>
+                </span>
+                <span>
+                    <a href="<%= post.url%>">Show post</a>
                 </span>
             </div>
         </li>
