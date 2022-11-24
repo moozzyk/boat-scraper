@@ -24,7 +24,7 @@
                     <a href="<%=post.url%>"><img class="image" src="<%=JSON.parse(post.images)[0]%>"/></a>
                 </span>
                 <span>
-                    <input type="checkbox" value="<%= !!post.hidden%>" onclick="javascript:hidePost('<%=post.url%>')" />
+                    <a class="delete" onclick="javascript:hidePost('<%=post.url%>')"></a>
                 </span>
             </div>
         </li>
