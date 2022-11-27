@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "devStart": "nodemon -e js,ejs,css dist/index.js"
+    "devStart": "nodemon -e js,ejs,css dist/index.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
