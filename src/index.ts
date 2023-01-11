@@ -1,4 +1,4 @@
-import { DB_FILENAME } from "./common";
+import { getDatabasePath } from "./common";
 import express from "express";
 import { PostsDb } from "./postsdb";
 
@@ -11,13 +11,13 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-  const posts = new PostsDb(DB_FILENAME).getPosts();
+  const posts = new PostsDb(getDatabasePath()).getPosts();
   res.render("index", { posts });
 });
 
 app.get("/hide", (req, res) => {
   if (req.query.postId) {
-    new PostsDb(DB_FILENAME).hidePost(req.query.postId as string);
+    new PostsDb(getDatabasePath()).hidePost(req.query.postId as string);
     res.sendStatus(200).end();
   } else {
     res.sendStatus(500).end();

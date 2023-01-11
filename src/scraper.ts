@@ -1,5 +1,5 @@
 import { forSaleBoats, GalleryPost } from "craigslist-automation";
-import { DB_FILENAME } from "./common";
+import { getDatabasePath } from "./common";
 import { PostsDb } from "./postsdb";
 
 const regex = new RegExp(
@@ -11,7 +11,7 @@ function shouldSkip(post: GalleryPost): boolean {
 }
 
 (async () => {
-  const postsDb = new PostsDb(DB_FILENAME);
+  const postsDb = new PostsDb(getDatabasePath());
   postsDb.createPostsDb();
 
   const lastPostDate = postsDb.lastPostDate();
