@@ -4,6 +4,7 @@ RUN apt-get install chromium -y
 ENV HOME=/home/app-user
 RUN useradd -m -d $HOME -s /bin/bash app-user 
 RUN mkdir -p $HOME/app 
+RUN mkdir -p $HOME/.boat-scraper
 WORKDIR $HOME/app
 COPY package*.json ./
 COPY tsconfig*.json ./
