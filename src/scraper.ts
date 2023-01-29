@@ -3,7 +3,8 @@ import { getDatabasePath } from "./common";
 import { PostsDb } from "./postsdb";
 
 const regex = new RegExp(
-  "^19\\d\\d|seadoo|sea-doo|whaler|sailboat|vintage|smokercraft|pontoon|dingy|inflatable|superjet|yacht|wooldridge",
+  "^19\\d\\d|seadoo|sea-doo|whaler|sailboat|vintage|smokercraft|pontoon|dingy|inflatable|superjet|yacht|wooldridge|" +
+    "jetski|jet ski|pontoon|alum|ciera|cierra|sled|contessa|sundancer|trophy|trawler",
   "i"
 );
 function shouldSkip(post: GalleryPost): boolean {
