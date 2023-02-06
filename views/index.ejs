@@ -12,10 +12,12 @@
 
 <body>
     <ul class="post-list">
-        <% for (post of locals.posts) {%>
+        <%  const groupedPosts = locals.posts;
+            for (const postGroup of groupedPosts) {
+                const post = postGroup[0] %>
         <li class="post" <%=post.hidden ? "hidden" : "" %> id="<%=post.url%>">
             <div class="post-overview">
-                <span class="post-title"><%=post.title%></span>
+                <span class="post-title"><%=post.title%> (<%=postGroup.length%>)</span>
                 <!-- <span class="date"><%=new Date(post.date_posted).toLocaleString("en-US")%></span> -->
                 <span class="date"><%=new Date(post.date_updated).toLocaleString("en-US")%></span>
                 <span class="price grid-item"><%=post.currency === "USD" ? `$${post.price}` : `${post.price} ${post.currency}`%></span>
