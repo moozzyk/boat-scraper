@@ -13,8 +13,14 @@
 <body>
     <ul class="post-list">
         <%  const groupedPosts = locals.posts;
+            let shownPosts = 0;
             for (const postGroup of groupedPosts) {
-                const post = postGroup[0] %>
+                const post = postGroup[0]
+                if (post.hidden) {
+                    continue;
+                } else if (++shownPosts > 100) {
+                    break;
+                } %>
         <li class="post" <%=post.hidden ? "hidden" : "" %> id="<%=post.url%>">
             <div class="post-overview">
                 <span class="post-title"><%=post.title%> (<%=postGroup.length%>)</span>
