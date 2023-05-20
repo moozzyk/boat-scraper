@@ -14,7 +14,7 @@ ul {
     object-fit: scale-down;
 }
 
-span {
+div.grid-item {
     /* border: 1px solid #000; */
     display: flex;
     align-items: center;
@@ -34,4 +34,13 @@ span {
     content: '×';
     font-size: 2.5em;
     font-family: Arial, sans-serif;
+}
+
+.prices {
+    display: block;
+    text-align: center;
+}
+
+.price-range {
+    font-size: smaller;
 }

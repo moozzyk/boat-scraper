@@ -12,58 +12,62 @@
 
 <body>
     <ul class="post-list">
-        <%  function formatPrice(post) {
-                return (post.currency === "USD")
-                    ? `$${post.price}`
-                    : `${post.price} ${post.currency}`;
-            }
-            function getMinMaxPrice(postGroup) {
-                let minPricePost = undefined;
-                let maxPricePost = undefined;
-                for (const post of postGroup) {
-                    const price = parseFloat(post.price);
-                    if (minPricePost === undefined || price < parseFloat(minPricePost.price)) {
-                        minPricePost = post;
-                    }
-                    if (maxPricePost === undefined || price > parseFloat(maxPricePost.price)) {
-                        maxPricePost = post;
-                    }
+        <%function formatPrice(post) {
+            return (post.currency === "USD")
+                ? `$${post.price}`
+                : `${post.price} ${post.currency}`;
+        }
+        function getMinMaxPrice(postGroup) {
+            let minPricePost = undefined;
+            let maxPricePost = undefined;
+            for (const post of postGroup) {
+                const price = parseFloat(post.price);
+                if (minPricePost === undefined || price < parseFloat(minPricePost.price)) {
+                    minPricePost = post;
                 }
-                return { minPricePost, maxPricePost };
+                if (maxPricePost === undefined || price > parseFloat(maxPricePost.price)) {
+                    maxPricePost = post;
+                }
             }
-            const groupedPosts = locals.posts;
-            let shownPosts = 0;
-            for (const postGroup of groupedPosts) {
-                const post = postGroup[0]
-                if (post.hidden) {
-                    continue;
-                } else if (++shownPosts > 100) {
-                    break;
-                } %>
-        <li class="post" <%=post.hidden ? "hidden" : "" %> id="<%=post.url%>">
-            <div class="post-overview">
-                <span class="post-title"><%=post.title%> (<%=postGroup.length%>)</span>
-                <!-- <span class="date"><%=new Date(post.date_posted).toLocaleString("en-US")%></span> -->
-                <span class="date"><%=new Date(post.date_updated).toLocaleString("en-US")%></span>
-                <span class="price"><%=formatPrice(post)%>
-                    <%
-                    if (postGroup.length > 1) {
-                    let {minPricePost, maxPricePost} = getMinMaxPrice(postGroup); %>
-                    <br><span class="price"> (<%=formatPrice(minPricePost)%> - <%=formatPrice(maxPricePost)%>)</span>
-                    <%}%>
-                </span>
-                <span class="location"><%=post.location%></span>
-                <span>
-                    <a href="<%=post.url%>"><img class="image" src="<%=JSON.parse(post.images)[0]%>"/></a>
-                </span>
-                <span>
-                    <a class="delete" onclick="javascript:hidePost('<%=post.url%>')"></a>
-                </span>
-            </div>
-        </li>
+            return { minPricePost, maxPricePost };
+        }
+
+        const groupedPosts = locals.posts;
+        let shownPosts = 0;
+        for (const postGroup of groupedPosts) {
+            const post = postGroup[0]
+            if (post.hidden) {
+                continue;
+            } else if (++shownPosts > 100) {
+                break;
+            }%>
+            <li class="post" <%=post.hidden ? "hidden" : "" %> id="<%=post.url%>">
+                <div class="post-overview">
+                    <div class="grid-item"><%=post.title%> (<%=postGroup.length%>)</div>
+                    <!-- <span class="date"><%=new Date(post.date_posted).toLocaleString("en-US")%></span> -->
+                    <div class="grid-item"><%=new Date(post.date_updated).toLocaleString("en-US")%></div>
+                    <div class="grid-item">
+                        <div class="prices">
+                            <div class="price"><%=formatPrice(post)%></div>
+                            <%if (postGroup.length > 1) {
+                                let {minPricePost, maxPricePost} = getMinMaxPrice(postGroup); %>
+                                <div class="price-range">
+                                    (<%=formatPrice(minPricePost)%> - <%=formatPrice(maxPricePost)%>)
+                                </div>
+                            <%}%>
+                        </div>
+                    </div>
+                    <div class="grid-item"><%=post.location%></div>
+                    <div class="grid-item">
+                        <a href="<%=post.url%>"><img class="image" src="<%=JSON.parse(post.images)[0]%>"/></a>
+                    </div>
+                    <div class="grid-item">
+                        <a class="delete" onclick="javascript:hidePost('<%=post.url%>')"></a>
+                    </div>
+                </div>
+            </li>
         <%}%>
     </ul>
-
 </body>
 
 </html>
