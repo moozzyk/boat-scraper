@@ -4,7 +4,7 @@ ul {
 
 .post-overview {
     display: grid;
-    grid-template-columns: 200px 120px 120px 150px 200px 100px;
+    grid-template-columns: 200px 120px 120px 180px 200px 100px;
 }
 
 .image {
@@ -23,13 +23,14 @@ span {
 
 .delete {
     opacity: 0.35;
-    color:firebrick;
+    color: firebrick;
 }
+
 .delete:hover {
     opacity: 1;
 }
 
-.delete::after{
+.delete::after {
     content: '×';
     font-size: 2.5em;
     font-family: Arial, sans-serif;

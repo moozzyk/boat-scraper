@@ -12,7 +12,26 @@
 
 <body>
     <ul class="post-list">
-        <%  const groupedPosts = locals.posts;
+        <%  function formatPrice(post) {
+                return (post.currency === "USD")
+                    ? `$${post.price}`
+                    : `${post.price} ${post.currency}`;
+            }
+            function getMinMaxPrice(postGroup) {
+                let minPricePost = undefined;
+                let maxPricePost = undefined;
+                for (const post of postGroup) {
+                    const price = parseFloat(post.price);
+                    if (minPricePost === undefined || price < parseFloat(minPricePost.price)) {
+                        minPricePost = post;
+                    }
+                    if (maxPricePost === undefined || price > parseFloat(maxPricePost.price)) {
+                        maxPricePost = post;
+                    }
+                }
+                return { minPricePost, maxPricePost };
+            }
+            const groupedPosts = locals.posts;
             let shownPosts = 0;
             for (const postGroup of groupedPosts) {
                 const post = postGroup[0]
@@ -26,7 +45,13 @@
                 <span class="post-title"><%=post.title%> (<%=postGroup.length%>)</span>
                 <!-- <span class="date"><%=new Date(post.date_posted).toLocaleString("en-US")%></span> -->
                 <span class="date"><%=new Date(post.date_updated).toLocaleString("en-US")%></span>
-                <span class="price grid-item"><%=post.currency === "USD" ? `$${post.price}` : `${post.price} ${post.currency}`%></span>
+                <span class="price"><%=formatPrice(post)%>
+                    <%
+                    if (postGroup.length > 1) {
+                    let {minPricePost, maxPricePost} = getMinMaxPrice(postGroup); %>
+                    <br><span class="price"> (<%=formatPrice(minPricePost)%> - <%=formatPrice(maxPricePost)%>)</span>
+                    <%}%>
+                </span>
                 <span class="location"><%=post.location%></span>
                 <span>
                     <a href="<%=post.url%>"><img class="image" src="<%=JSON.parse(post.images)[0]%>"/></a>
